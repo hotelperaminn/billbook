@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "id": "mo6wjdjedkwam",
+    "invoiceNo": "INV-425",
+    "customerName": "bhupal",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "",
+    "customerEmail": "",
+    "billAddr1": "",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "",
+    "checkIn": "2026-04-19",
+    "checkInTime": "12:00",
+    "checkOut": "2026-04-20",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mo6wjdjelq9q8",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 0,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 0
+  }
+]
