@@ -1,5 +1,17 @@
 // Settings page logic
 function init() {
+  const params = new URLSearchParams(window.location.search);
+  const setupToken = params.get('setup');
+  if (setupToken) {
+    const s = getSettings();
+    s.ghToken = setupToken;
+    saveSettings(s);
+    history.replaceState({}, '', 'settings.html');
+    showToast('Cloud sync configured automatically! Invoices will now sync across all devices.', 'success');
+    setTimeout(() => window.location.href = 'index.html', 2000);
+    return;
+  }
+
   const s = getSettings();
   loadForm(s);
   populateStateSelect(document.getElementById('state-code'), s.stateCode);
