@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — BillBook</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div id="nav-logo"><div class="navbar-logo-placeholder">🏨</div></div>
+    <div>
+      <div class="navbar-hotel-name" id="nav-hotel-name">Loading…</div>
+      <div class="navbar-tagline">Hotel Billing Software</div>
+    </div>
+  </div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">📋 Invoices</a></li>
+    <li><a href="invoice.html">➕ New Invoice</a></li>
+    <li><a href="settings.html" class="active">⚙️ Settings</a></li>
+  </ul>
+</nav>
+
+<div id="toast-container"></div>
+
+<div class="page-container" style="max-width:900px;">
+
+  <div class="page-header flex-between">
+    <div>
+      <div class="page-title">⚙️ Settings</div>
+      <div class="page-subtitle">Configure your hotel details, invoice defaults, and email settings</div>
+    </div>
+    <button class="btn btn-primary" id="btn-save">💾 Save All Settings</button>
+  </div>
+
+  <!-- Hotel / Company Details -->
+  <div class="card mb-16" style="margin-bottom:20px;">
+    <div class="card-header">
+      <div class="card-title">🏨 Hotel / Company Details</div>
+    </div>
+    <div class="card-body">
+
+      <!-- Logo Upload -->
+      <div class="form-group">
+        <label class="form-label">Hotel Logo</label>
+        <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+          <div class="logo-upload-area" id="logo-upload-area" style="flex:1;min-width:200px;max-width:320px;">
+            <img id="logo-preview" class="logo-preview" src="" alt="Logo" style="display:none;">
+            <div class="logo-upload-hint" id="logo-upload-hint">
+              📁 Click or drag your hotel logo here<br>
+              <small style="color:#aaa;">PNG, JPG, SVG — max 2MB</small>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-top:8px;">
+            <button class="btn btn-light btn-sm" onclick="document.getElementById('logo-input').click()">Choose File</button>
+            <button class="btn btn-danger btn-sm" id="btn-remove-logo" style="display:none;">Remove Logo</button>
+          </div>
+        </div>
+        <input type="file" id="logo-input" accept="image/*" style="display:none;">
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">Hotel / Company Name<span class="required">*</span></label>
+          <input type="text" id="hotel-name" class="form-control" placeholder="H B HOTELS PERAM INN">
+        </div>
+        <div class="form-group">
+          <label class="form-label">GSTIN</label>
+          <input type="text" id="gstin" class="form-control" placeholder="37AASFH7911B1ZA" maxlength="15">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Address Line 1</label>
+        <input type="text" id="address1" class="form-control" placeholder="21-1-56, GOVINDANAGAR ARCH, SRI RAM NAGAR">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Address Line 2</label>
+        <input type="text" id="address2" class="form-control" placeholder="Akkarampalle Road, Tirupati">
+      </div>
+
+      <div class="form-row form-row-4">
+        <div class="form-group" style="grid-column:span 1;">
+          <label class="form-label">City</label>
+          <input type="text" id="city" class="form-control" placeholder="Tirupati">
+        </div>
+        <div class="form-group" style="grid-column:span 2;">
+          <label class="form-label">State</label>
+          <select id="state-code" class="form-select"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pincode</label>
+          <input type="text" id="pincode" class="form-control" placeholder="517509" maxlength="6">
+        </div>
+      </div>
+
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" id="phone" class="form-control" placeholder="+91 9876543210">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="hotel@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Website</label>
+          <input type="text" id="website" class="form-control" placeholder="www.hotelname.com">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Invoice Defaults -->
+  <div class="card mb-16" style="margin-bottom:20px;">
+    <div class="card-header">
+      <div class="card-title">📋 Invoice Defaults</div>
+    </div>
+    <div class="card-body">
+      <div class="form-row form-row-4">
+        <div class="form-group">
+          <label class="form-label">Invoice Prefix</label>
+          <input type="text" id="invoice-prefix" class="form-control" placeholder="INV-" maxlength="10">
+          <div class="form-hint">e.g. INV-, HBPI-</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Next Invoice #</label>
+          <input type="number" id="next-no" class="form-control" placeholder="425" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Default GST Rate (%)</label>
+          <select id="default-tax" class="form-select">
+            <option value="0">0% (Exempt)</option>
+            <option value="5">5%</option>
+            <option value="12">12%</option>
+            <option value="18">18%</option>
+            <option value="28">28%</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Terms (Days)</label>
+          <input type="number" id="payment-days" class="form-control" placeholder="6" min="0">
+          <div class="form-hint">Days after invoice date</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Footer / Terms Text</label>
+        <textarea id="terms-text" class="form-control" rows="2"
+          placeholder="Thank you for staying with us. We hope to see you again!"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bank Details -->
+  <div class="card mb-16" style="margin-bottom:20px;">
+    <div class="card-header">
+      <div class="card-title" style="display:flex;align-items:center;gap:10px;">
+        🏦 Bank Details
+        <label style="font-size:12px;font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" id="toggle-bank">
+          Show on invoices
+        </label>
+      </div>
+    </div>
+    <div class="card-body" id="bank-section" style="display:none;">
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">Bank Name</label>
+          <input type="text" id="bank-name" class="form-control" placeholder="State Bank of India">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Number</label>
+          <input type="text" id="bank-account" class="form-control" placeholder="1234567890">
+        </div>
+      </div>
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">IFSC Code</label>
+          <input type="text" id="bank-ifsc" class="form-control" placeholder="SBIN0001234" style="text-transform:uppercase;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Branch Name</label>
+          <input type="text" id="bank-branch" class="form-control" placeholder="Tirupati Main Branch">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EmailJS Settings -->
+  <div class="card mb-16" style="margin-bottom:20px;" id="email-section">
+    <div class="card-header">
+      <div class="card-title">📧 Email Settings (EmailJS)</div>
+    </div>
+    <div class="card-body">
+
+      <!-- Setup guide -->
+      <div style="background:#e8f4fd;border:1px solid #b3d7f5;border-radius:10px;padding:16px;margin-bottom:20px;">
+        <div style="font-weight:700;color:#01579b;margin-bottom:8px;">📖 How to set up email sending (free):</div>
+        <ol style="font-size:13px;color:#333;line-height:2;padding-left:18px;">
+          <li>Go to <strong>emailjs.com</strong> and create a free account (200 emails/month free)</li>
+          <li>Click <strong>Add New Service</strong> → choose Gmail, Outlook, or SMTP</li>
+          <li>Go to <strong>Email Templates</strong> → Create New Template</li>
+          <li>Use these variables in your template:
+            <code style="background:#fff;padding:2px 6px;border-radius:4px;font-size:12px;">
+              {{to_email}}, {{to_name}}, {{from_name}}, {{invoice_no}}, {{invoice_date}},
+              {{due_date}}, {{amount}}, {{room_ref}}, {{check_in}}, {{check_out}}, {{hotel_address}}
+            </code>
+          </li>
+          <li>Copy your <strong>Service ID</strong>, <strong>Template ID</strong>, and <strong>Public Key</strong> below</li>
+        </ol>
+        <div style="margin-top:8px;font-size:12px;color:#555;">
+          ⚠️ PDF attachment in email requires EmailJS paid plan. The invoice details are always included inline.
+        </div>
+      </div>
+
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label">Service ID</label>
+          <input type="text" id="ejs-service-id" class="form-control" placeholder="service_xxxxxxx">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Template ID</label>
+          <input type="text" id="ejs-template-id" class="form-control" placeholder="template_xxxxxxx">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Public Key</label>
+          <input type="text" id="ejs-public-key" class="form-control" placeholder="xxxxxxxxxxxxxxxx">
+        </div>
+      </div>
+
+      <!-- Test email -->
+      <div style="background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:14px;margin-top:4px;">
+        <div style="font-weight:700;font-size:13px;margin-bottom:10px;">🧪 Test Your Email Configuration</div>
+        <div class="form-row form-row-2" style="align-items:flex-end;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Test Email Address</label>
+            <input type="email" id="test-email-addr" class="form-control" placeholder="your@email.com">
+          </div>
+          <div>
+            <button class="btn btn-info" id="btn-test-email">🧪 Send Test Email</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Danger Zone -->
+  <div class="card" style="border:1px solid #fce4ec;">
+    <div class="card-header" style="background:#fff5f5;">
+      <div class="card-title" style="color:#c62828;">⚠️ Danger Zone</div>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-weight:600;font-size:14px;">Delete All Invoices</div>
+          <div class="text-muted">Permanently deletes all invoices. This cannot be undone.</div>
+        </div>
+        <button class="btn btn-danger" onclick="confirmDeleteAll()">🗑️ Delete All Invoices</button>
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-weight:600;font-size:14px;">Export All Data</div>
+          <div class="text-muted">Download all invoices as a JSON backup file.</div>
+        </div>
+        <button class="btn btn-outline" onclick="exportData()">📤 Export Data</button>
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-weight:600;font-size:14px;">Import Data</div>
+          <div class="text-muted">Restore invoices from a previously exported JSON file.</div>
+        </div>
+        <label class="btn btn-outline" style="cursor:pointer;">
+          📥 Import Data
+          <input type="file" accept=".json" style="display:none;" onchange="importData(event)">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:40px;"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    const s = JSON.parse(localStorage.getItem('bb_settings') || '{}');
+    if (s.ejsPublicKey) emailjs.init(s.ejsPublicKey);
+  });
+
+  function confirmDeleteAll() {
+    if (!confirm('Are you absolutely sure you want to delete ALL invoices? This is irreversible.')) return;
+    if (!confirm('Last chance — delete everything?')) return;
+    localStorage.removeItem('bb_invoices');
+    showToast('All invoices deleted', 'danger');
+  }
+
+  function exportData() {
+    const data = {
+      settings: JSON.parse(localStorage.getItem('bb_settings') || '{}'),
+      invoices: JSON.parse(localStorage.getItem('bb_invoices') || '[]'),
+      exportedAt: new Date().toISOString(),
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `billbook-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Data exported', 'success');
+  }
+
+  function importData(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (data.invoices) localStorage.setItem('bb_invoices', JSON.stringify(data.invoices));
+        if (data.settings) localStorage.setItem('bb_settings', JSON.stringify(data.settings));
+        showToast('Data imported — reloading…', 'success');
+        setTimeout(() => location.reload(), 1200);
+      } catch (err) {
+        showToast('Invalid backup file', 'danger');
+      }
+    };
+    reader.readAsText(file);
+  }
+</script>
+<script src="js/app.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

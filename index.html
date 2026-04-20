@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BillBook — Hotel Billing</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div id="nav-logo"><div class="navbar-logo-placeholder">🏨</div></div>
+    <div>
+      <div class="navbar-hotel-name" id="nav-hotel-name">Loading…</div>
+      <div class="navbar-tagline">Hotel Billing Software</div>
+    </div>
+  </div>
+  <ul class="navbar-nav">
+    <li><a href="index.html" class="active">📋 Invoices</a></li>
+    <li><a href="invoice.html">➕ New Invoice</a></li>
+    <li><a href="settings.html">⚙️ Settings</a></li>
+    <li><a href="invoice.html" class="btn-new">+ New Invoice</a></li>
+  </ul>
+</nav>
+
+<div id="toast-container"></div>
+
+<div class="page-container">
+  <div class="page-header flex-between">
+    <div>
+      <div class="page-title">Invoice Dashboard</div>
+      <div class="page-subtitle">Manage all your hotel invoices in one place</div>
+    </div>
+    <a href="invoice.html" class="btn btn-success">+ Create Invoice</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card" style="--accent:#1a3c5e;">
+      <div class="stat-icon">📄</div>
+      <div><div class="stat-label">Total Invoices</div><div class="stat-value" id="stat-total">0</div></div>
+    </div>
+    <div class="stat-card" style="--accent:#00796b;">
+      <div class="stat-icon">💰</div>
+      <div><div class="stat-label">Total Revenue</div><div class="stat-value" id="stat-revenue">₹0.00</div></div>
+    </div>
+    <div class="stat-card" style="--accent:#2e7d32;">
+      <div class="stat-icon">✅</div>
+      <div><div class="stat-label">Paid</div><div class="stat-value" id="stat-paid">0</div></div>
+    </div>
+    <div class="stat-card" style="--accent:#e65100;">
+      <div class="stat-icon">⏳</div>
+      <div><div class="stat-label">Pending / Draft</div><div class="stat-value" id="stat-pending">0</div></div>
+    </div>
+  </div>
+
+  <!-- Invoice List -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">All Invoices</div>
+      <div class="filter-bar">
+        <input type="text" id="search-input" class="form-control" placeholder="🔍 Search invoice, guest…">
+        <select id="status-filter" class="form-select">
+          <option value="">All Status</option>
+          <option value="draft">Draft</option>
+          <option value="sent">Sent</option>
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select id="sort-select" class="form-select">
+          <option value="date-desc">Newest First</option>
+          <option value="date-asc">Oldest First</option>
+          <option value="amount-desc">Highest Amount</option>
+          <option value="amount-asc">Lowest Amount</option>
+        </select>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="inv-table" style="min-width:900px;">
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Guest / Customer</th>
+            <th>Room / Ref</th>
+            <th>Check-in</th>
+            <th>Invoice Date</th>
+            <th class="text-right">Amount</th>
+            <th class="text-center">Status</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="invoice-tbody">
+          <tr><td colspan="8">
+            <div class="empty-state">
+              <div class="empty-state-icon">🏨</div>
+              <h3>No invoices yet</h3>
+              <p>Click <strong>Create Invoice</strong> to generate your first invoice</p>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // Init EmailJS (will be called in dashboard.js after settings load)
+  window.addEventListener('load', () => {
+    const s = JSON.parse(localStorage.getItem('bb_settings') || '{}');
+    if (s.ejsPublicKey) emailjs.init(s.ejsPublicKey);
+  });
+</script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
