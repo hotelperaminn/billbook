@@ -13,13 +13,15 @@ const SAC_CODES = [
 ];
 
 async function init() {
+  if (!requireAuth()) return;
   renderNavBrand();
+  renderAuthBadge();
   await initGitHubSync();
+
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const settings = getSettings();
 
-  // Populate state dropdowns
   populateStateSelect(document.getElementById('bill-state'), settings.stateCode);
   populateStateSelect(document.getElementById('supply-code'), settings.stateCode);
 
@@ -27,13 +29,28 @@ async function init() {
     currentInvoice = getInvoiceById(id);
     if (!currentInvoice) { showToast('Invoice not found', 'danger'); return; }
     populateForm(currentInvoice);
-    document.getElementById('page-title').textContent = 'Edit Invoice';
+    document.getElementById('page-title').textContent = canEdit() ? 'Edit Invoice' : 'View Invoice';
   } else {
+    if (!canEdit()) { window.location.href = 'index.html'; return; }
     currentInvoice = createBlank(settings);
     populateForm(currentInvoice);
   }
 
+  applyInvoiceRoles();
   attachListeners();
+}
+
+function applyInvoiceRoles() {
+  if (canEdit()) return;
+
+  // Viewer: disable all inputs and hide edit-only buttons
+  document.querySelectorAll('#form-panel input, #form-panel select, #form-panel textarea')
+    .forEach(el => { el.disabled = true; });
+  document.querySelectorAll('#btn-save, #btn-new-from-here, #btn-add-item, .del-item-btn')
+    .forEach(el => el && (el.style.display = 'none'));
+
+  document.body.insertAdjacentHTML('afterbegin',
+    '<div class="role-banner">👁️ Read-only access — you can preview and download this invoice but not edit it.</div>');
 }
 
 function renderNavBrand() {
@@ -80,7 +97,6 @@ function populateForm(inv) {
   if (inv.billState) setSelectVal('bill-state', inv.billState);
   if (inv.supplyCode) setSelectVal('supply-code', inv.supplyCode);
 
-  // Render items
   const tbody = document.getElementById('items-tbody');
   tbody.innerHTML = '';
   (inv.items || []).forEach(item => addItemRow(item));
@@ -153,6 +169,7 @@ function calcRowAmount(tr) {
 }
 
 function removeItemRow(btn) {
+  if (!canEdit()) return;
   const tr = btn.closest('tr');
   const tbody = document.getElementById('items-tbody');
   if (tbody.children.length <= 1) { showToast('At least one item required', 'warning'); return; }
@@ -212,17 +229,19 @@ function showPreview() {
 function attachListeners() {
   document.getElementById('check-in').addEventListener('change', syncStayDates);
   document.getElementById('check-out').addEventListener('change', syncStayDates);
-
-  document.getElementById('btn-add-item').addEventListener('click', () => addItemRow());
   document.getElementById('btn-preview').addEventListener('click', showPreview);
-  document.getElementById('btn-save').addEventListener('click', saveInvoice);
   document.getElementById('btn-pdf').addEventListener('click', downloadPDF);
   document.getElementById('btn-print').addEventListener('click', printInvoice);
-  document.getElementById('btn-new-from-here').addEventListener('click', () => {
-    if (confirm('Save current invoice and start a new one?')) {
-      saveInvoice(null, () => window.location.href = 'invoice.html');
-    }
-  });
+
+  if (canEdit()) {
+    document.getElementById('btn-add-item').addEventListener('click', () => addItemRow());
+    document.getElementById('btn-save').addEventListener('click', saveInvoice);
+    document.getElementById('btn-new-from-here').addEventListener('click', () => {
+      if (confirm('Save current invoice and start a new one?')) {
+        saveInvoice(null, () => window.location.href = 'invoice.html');
+      }
+    });
+  }
 }
 
 function syncStayDates() {
@@ -231,14 +250,12 @@ function syncStayDates() {
   if (!checkIn || !checkOut) return;
   const days = Math.round((new Date(checkOut) - new Date(checkIn)) / 86400000);
   if (days <= 0) return;
-
-  // Update qty of first item
   const firstQty = document.querySelector('#items-tbody tr .item-qty');
   if (firstQty) { firstQty.value = days; firstQty.dispatchEvent(new Event('input')); }
 }
 
-
 function saveInvoice(e, callback) {
+  if (!canEdit()) { showToast('No permission to save invoices', 'danger'); return; }
   const inv = collectFormData();
   if (!inv.customerName) { showToast('Customer name is required', 'warning'); return; }
 
@@ -251,7 +268,6 @@ function saveInvoice(e, callback) {
   showToast('Invoice saved', 'success');
   if (callback) callback();
 
-  // Update URL to include id
   const url = new URL(window.location.href);
   url.searchParams.set('id', inv.id);
   history.replaceState({}, '', url.toString());
@@ -300,83 +316,12 @@ function printInvoice() {
   const win = window.open('', '_blank', 'width=900,height=700');
   win.document.write(`<!DOCTYPE html><html><head>
     <title>${inv.invoiceNo}</title>
-    <style>
-      body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
-      @media print { body { padding: 0; } }
-    </style>
+    <style>body { margin:0; padding:20px; font-family:Arial,sans-serif; }
+    @media print { body { padding:0; } }</style>
   </head><body>${html}
     <script>window.onload = () => { window.print(); window.close(); }<\/script>
   </body></html>`);
   win.document.close();
-}
-
-async function sendEmail() {
-  const settings = getSettings();
-  if (!settings.ejsPublicKey) {
-    showToast('Configure EmailJS settings first', 'warning');
-    window.open('settings.html#email', '_blank');
-    return;
-  }
-  const inv = collectFormData();
-  const { total } = calcTotals(inv.items || [], settings.stateCode, inv.supplyCode || settings.stateCode);
-  inv.total = total;
-
-  if (!inv.customerEmail) {
-    const email = prompt('Enter customer email address:');
-    if (!email) return;
-    inv.customerEmail = email;
-    document.getElementById('cust-email').value = email;
-  }
-
-  const btn = document.getElementById('btn-email');
-  btn.disabled = true; btn.textContent = '⏳ Sending…';
-
-  try {
-    const html = renderInvoice(inv, settings);
-    const el = document.createElement('div');
-    el.innerHTML = html;
-    el.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;';
-    document.body.appendChild(el);
-
-    let pdfBase64 = '';
-    try {
-      const pdfBlob = await html2pdf().set({
-        margin: 8, html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(el.firstElementChild).outputPdf('blob');
-
-      pdfBase64 = await new Promise(res => {
-        const reader = new FileReader();
-        reader.onloadend = () => res(reader.result.split(',')[1]);
-        reader.readAsDataURL(pdfBlob);
-      });
-    } catch (_) { /* attachment optional */ }
-    document.body.removeChild(el);
-
-    await emailjs.send(settings.ejsServiceId, settings.ejsTemplateId, {
-      to_email: inv.customerEmail,
-      to_name: inv.customerName || '',
-      from_name: settings.hotelName,
-      invoice_no: inv.invoiceNo,
-      invoice_date: fmtDate(inv.invoiceDate),
-      due_date: fmtDate(inv.dueDate),
-      room_ref: inv.reference || '',
-      check_in: inv.checkIn ? fmtDate(inv.checkIn) : '',
-      check_out: inv.checkOut ? fmtDate(inv.checkOut) : '',
-      amount: fmtCur(inv.total),
-      hotel_address: [settings.address1, settings.city, settings.state].filter(Boolean).join(', '),
-      pdf_attachment: pdfBase64,
-    }, settings.ejsPublicKey);
-
-    inv.status = 'sent';
-    saveInvoiceData(inv);
-    showToast(`Email sent to ${inv.customerEmail}`, 'success');
-  } catch (err) {
-    console.error(err);
-    showToast('Email failed: ' + (err.text || err.message || 'Check EmailJS settings'), 'danger');
-  } finally {
-    btn.disabled = false; btn.textContent = '📧 Send Email';
-  }
 }
 
 document.addEventListener('DOMContentLoaded', init);

@@ -145,6 +145,14 @@ const GHS = {
     return null;
   },
 
+  async saveUsers(users) {
+    if (!this.isReady()) return;
+    try {
+      const res = await this.read('data/users.json').catch(() => ({ data: null, sha: null }));
+      await this.write('data/users.json', users, res.sha);
+    } catch (e) { console.error('GHS saveUsers:', e); }
+  },
+
   async saveSettings(settings) {
     if (!this.isReady()) return;
     // Exclude large logo from cloud sync to keep file small
@@ -215,6 +223,14 @@ async function initGitHubSync() {
       }
     } catch (e) { /* silent */ }
   }
+
+  // Pull users from GitHub
+  try {
+    const { data: cloudUsers } = await GHS.read('data/users.json');
+    if (Array.isArray(cloudUsers) && cloudUsers.length > 0) {
+      localStorage.setItem('bb_users', JSON.stringify(cloudUsers));
+    }
+  } catch (e) { /* silent */ }
 
   // Pull settings from GitHub (preserves local logo)
   const cloudSettings = await GHS.loadSettings();

@@ -2,7 +2,10 @@
 let allInvoices = [];
 
 async function init() {
+  if (!requireAuth()) return;
   renderNavBrand();
+  renderAuthBadge();
+  applyDashboardRoles();
   await initGitHubSync();
   allInvoices = getInvoices();
   renderStats();
@@ -11,7 +14,6 @@ async function init() {
   document.getElementById('status-filter').addEventListener('change', applyFilters);
   document.getElementById('sort-select').addEventListener('change', applyFilters);
 
-  // Auto-refresh when background poll finds new data
   window.addEventListener('bb-invoices-updated', () => {
     allInvoices = getInvoices();
     renderStats();
@@ -20,13 +22,21 @@ async function init() {
   GHS.startPolling();
 }
 
+function applyDashboardRoles() {
+  // Viewer: hide create invoice button
+  if (!canEdit()) {
+    document.querySelectorAll('a[href="invoice.html"]').forEach(el => el.style.display = 'none');
+    // Show read-only banner
+    document.body.insertAdjacentHTML('afterbegin',
+      '<div class="role-banner">👁️ Read-only access — you can view and download invoices but not create or edit them.</div>');
+  }
+}
+
 function renderNavBrand() {
   const s = getSettings();
   document.getElementById('nav-hotel-name').textContent = s.hotelName;
   const logoEl = document.getElementById('nav-logo');
-  if (s.logo) {
-    logoEl.innerHTML = `<img src="${s.logo}" class="navbar-logo" alt="Logo">`;
-  }
+  if (s.logo) logoEl.innerHTML = `<img src="${s.logo}" class="navbar-logo" alt="Logo">`;
 }
 
 function renderStats() {
@@ -71,6 +81,8 @@ function applyFilters() {
 
 function renderTable(invoices) {
   const tbody = document.getElementById('invoice-tbody');
+  const role = getRole();
+
   if (!invoices.length) {
     tbody.innerHTML = `<tr><td colspan="8">
       <div class="empty-state">
@@ -82,8 +94,28 @@ function renderTable(invoices) {
     return;
   }
 
-  tbody.innerHTML = invoices.map(inv => `
-    <tr>
+  tbody.innerHTML = invoices.map(inv => {
+    // Status: viewer sees plain text, others get dropdown
+    const statusCell = role === 'viewer'
+      ? `<span class="badge" style="background:#e3f2fd;color:#1565c0;">${inv.status}</span>`
+      : `<select class="form-select form-control-sm" style="width:auto;min-width:90px;font-size:11px;"
+           onchange="updateStatus('${inv.id}', this.value)">
+           ${['draft','sent','paid','pending','cancelled'].map(s =>
+             `<option value="${s}" ${inv.status === s ? 'selected' : ''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+           ).join('')}
+         </select>`;
+
+    // Edit button: only for admin/editor
+    const editBtn = canEdit()
+      ? `<a href="invoice.html?id=${inv.id}" class="btn btn-sm btn-outline" title="Edit">✏️</a>`
+      : `<a href="invoice.html?id=${inv.id}" class="btn btn-sm btn-outline" title="View">👁️</a>`;
+
+    // Delete button: admin only
+    const deleteBtn = canDelete()
+      ? `<button class="btn btn-sm btn-danger" title="Delete" onclick="confirmDelete('${inv.id}')">🗑️</button>`
+      : '';
+
+    return `<tr>
       <td><span class="invoice-no">${inv.invoiceNo || ''}</span></td>
       <td>
         <div class="customer-name">${inv.customerName || ''}</div>
@@ -93,26 +125,20 @@ function renderTable(invoices) {
       <td>${inv.checkIn ? fmtDate(inv.checkIn) : '<span class="text-muted">—</span>'}</td>
       <td>${inv.invoiceDate ? fmtDate(inv.invoiceDate) : ''}</td>
       <td class="text-right amount-cell">${fmtCur(inv.total || 0)}</td>
-      <td class="text-center">
-        <select class="form-select form-control-sm" style="width:auto;min-width:90px;font-size:11px;"
-          onchange="updateStatus('${inv.id}', this.value)">
-          ${['draft','sent','paid','pending','cancelled'].map(s =>
-            `<option value="${s}" ${inv.status === s ? 'selected' : ''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
-          ).join('')}
-        </select>
-      </td>
+      <td class="text-center">${statusCell}</td>
       <td>
         <div class="flex gap-8" style="justify-content:flex-end;">
-          <a href="invoice.html?id=${inv.id}" class="btn btn-sm btn-outline" title="Edit">✏️</a>
-          <button class="btn btn-sm btn-info" title="Download PDF" onclick="downloadPDF('${inv.id}')">⬇️ PDF</button>
-          <button class="btn btn-sm btn-danger" title="Delete" onclick="confirmDelete('${inv.id}')">🗑️</button>
+          ${editBtn}
+          <button class="btn btn-sm btn-info" title="Download PDF" onclick="downloadPDF('${inv.id}')">⬇️</button>
+          ${deleteBtn}
         </div>
       </td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
 }
 
 function updateStatus(id, status) {
+  if (!canEdit()) return;
   const inv = getInvoiceById(id);
   if (!inv) return;
   inv.status = status;
@@ -123,6 +149,7 @@ function updateStatus(id, status) {
 }
 
 function confirmDelete(id) {
+  if (!canDelete()) { showToast('No permission to delete invoices', 'danger'); return; }
   const inv = getInvoiceById(id);
   if (!inv) return;
   showConfirmModal(
@@ -157,111 +184,6 @@ function showConfirmModal(title, msg, onConfirm) {
     document.getElementById('confirm-modal').remove();
     onConfirm();
   };
-}
-
-function promptEmail(id) {
-  const inv = getInvoiceById(id);
-  if (!inv) return;
-  const settings = getSettings();
-
-  if (!settings.ejsPublicKey) {
-    showToast('Configure EmailJS settings first', 'warning');
-    window.location.href = 'settings.html#email';
-    return;
-  }
-
-  const existing = document.getElementById('email-modal');
-  if (existing) existing.remove();
-
-  document.body.insertAdjacentHTML('beforeend', `
-    <div class="modal-overlay" id="email-modal">
-      <div class="modal-box">
-        <div class="modal-title">📧 Send Invoice via Email</div>
-        <div class="form-group">
-          <label class="form-label">Recipient Email</label>
-          <input type="email" class="form-control" id="email-to" value="${inv.customerEmail || ''}" placeholder="customer@example.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Subject</label>
-          <input type="text" class="form-control" id="email-subject" value="Invoice ${inv.invoiceNo} from ${settings.hotelName}">
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-light" onclick="document.getElementById('email-modal').remove()">Cancel</button>
-          <button class="btn btn-success" id="send-email-btn">Send Email</button>
-        </div>
-      </div>
-    </div>
-  `);
-
-  document.getElementById('send-email-btn').onclick = () => sendEmailForInvoice(id);
-}
-
-async function sendEmailForInvoice(id) {
-  const inv = getInvoiceById(id);
-  const settings = getSettings();
-  const toEmail = document.getElementById('email-to')?.value;
-  const subject = document.getElementById('email-subject')?.value;
-
-  if (!toEmail) { showToast('Please enter recipient email', 'warning'); return; }
-
-  const btn = document.getElementById('send-email-btn');
-  btn.disabled = true; btn.textContent = 'Sending…';
-
-  try {
-    const html = renderInvoice(inv, settings);
-    const el = document.createElement('div');
-    el.innerHTML = html;
-    el.style.position = 'fixed'; el.style.left = '-9999px'; el.style.top = '0';
-    el.style.width = '794px';
-    document.body.appendChild(el);
-
-    let pdfBase64 = '';
-    try {
-      const pdfBlob = await html2pdf().set({
-        margin: 8, filename: `${inv.invoiceNo}.pdf`,
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(el.firstElementChild).outputPdf('blob');
-
-      pdfBase64 = await new Promise(res => {
-        const reader = new FileReader();
-        reader.onloadend = () => res(reader.result.split(',')[1]);
-        reader.readAsDataURL(pdfBlob);
-      });
-    } catch (e) { /* PDF attachment not critical */ }
-    document.body.removeChild(el);
-
-    const { taxable, cgst, sgst, igst, inter, total } = calcTotals(
-      inv.items || [], settings.stateCode, inv.supplyCode || settings.stateCode
-    );
-
-    await emailjs.send(settings.ejsServiceId, settings.ejsTemplateId, {
-      to_email: toEmail,
-      to_name: inv.customerName || '',
-      from_name: settings.hotelName,
-      invoice_no: inv.invoiceNo,
-      invoice_date: fmtDate(inv.invoiceDate),
-      due_date: fmtDate(inv.dueDate),
-      room_ref: inv.reference || '',
-      check_in: inv.checkIn ? fmtDate(inv.checkIn) : '',
-      check_out: inv.checkOut ? fmtDate(inv.checkOut) : '',
-      amount: fmtCur(inv.total || total),
-      subject: subject || `Invoice ${inv.invoiceNo}`,
-      hotel_address: [settings.address1, settings.city, settings.state].filter(Boolean).join(', '),
-      pdf_attachment: pdfBase64,
-    }, settings.ejsPublicKey);
-
-    inv.status = 'sent'; saveInvoiceData(inv);
-    allInvoices = getInvoices();
-    renderStats();
-    renderTable(allInvoices);
-    document.getElementById('email-modal')?.remove();
-    showToast(`Email sent to ${toEmail}`, 'success');
-  } catch (err) {
-    console.error(err);
-    showToast('Email failed: ' + (err.text || err.message || 'Unknown error'), 'danger');
-    btn.disabled = false; btn.textContent = 'Send Email';
-  }
 }
 
 async function downloadPDF(id) {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — BillBook</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--bg); }
+    .login-card {
+      background:#fff; border-radius:16px; box-shadow:0 4px 32px rgba(0,0,0,.12);
+      padding:40px 36px; width:100%; max-width:380px;
+    }
+    .login-logo { text-align:center; margin-bottom:24px; }
+    .login-logo-icon { font-size:48px; line-height:1; }
+    .login-hotel-name { font-size:18px; font-weight:800; color:var(--primary); margin-top:8px; }
+    .login-subtitle { font-size:12px; color:#888; margin-top:2px; }
+    .login-title { font-size:20px; font-weight:700; color:#1a3c5e; margin-bottom:20px; text-align:center; }
+    .login-error {
+      background:#ffeaea; border:1px solid #f5c6cb; color:#c62828;
+      border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:16px; display:none;
+    }
+  </style>
+</head>
+<body>
+<div class="login-card">
+  <div class="login-logo">
+    <div class="login-logo-icon" id="login-logo-area">🏨</div>
+    <div class="login-hotel-name" id="login-hotel-name">BillBook</div>
+    <div class="login-subtitle">Hotel Billing Software</div>
+  </div>
+  <div class="login-title">Sign In</div>
+  <div class="login-error" id="login-error">Invalid username or password.</div>
+  <form id="login-form" autocomplete="on">
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" id="login-username" class="form-control" placeholder="Enter username" autocomplete="username" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="login-password" class="form-control" placeholder="Enter password" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;" id="login-btn">Sign In</button>
+  </form>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Pre-fill hotel name from settings
+  (function() {
+    const s = JSON.parse(localStorage.getItem('bb_settings') || '{}');
+    if (s.hotelName) document.getElementById('login-hotel-name').textContent = s.hotelName;
+    if (s.logo) document.getElementById('login-logo-area').innerHTML = `<img src="${s.logo}" style="max-height:64px;max-width:160px;object-fit:contain;" alt="Logo">`;
+  })();
+
+  // Redirect if already logged in
+  if (getCurrentUser()) window.location.href = 'index.html';
+
+  document.getElementById('login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const errEl = document.getElementById('login-error');
+    errEl.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Signing in…';
+
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    const ok = await loginUser(username, password);
+    if (ok) {
+      window.location.href = 'index.html';
+    } else {
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Sign In';
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-password').focus();
+    }
+  });
+</script>
+</body>
+</html>

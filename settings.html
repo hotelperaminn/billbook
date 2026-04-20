@@ -290,6 +290,27 @@
     </div>
   </div>
 
+  <!-- User Management -->
+  <div class="card mb-16" style="margin-bottom:20px;">
+    <div class="card-header" style="background:#f3e5f5;">
+      <div class="card-title" style="color:#6a1b9a;">👥 User Management</div>
+      <button class="btn btn-sm btn-outline" onclick="openAddUser()">+ Add User</button>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Display Name</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- Danger Zone -->
   <div class="card" style="border:1px solid #fce4ec;">
     <div class="card-header" style="background:#fff5f5;">
@@ -376,6 +397,7 @@
   }
 </script>
 <script src="js/app.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/github-storage.js"></script>
 <script src="js/settings.js"></script>
 </body>
