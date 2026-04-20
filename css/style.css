@@ -290,6 +290,29 @@ a { color: inherit; text-decoration: none; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
 
+/* ── Stay dates block ────────────────────────────────────────────────────────*/
+.stay-dates-block {
+  display: flex; align-items: flex-start; gap: 12px; margin-bottom: 4px;
+}
+.stay-dates-col {
+  flex: 1; border-radius: 10px; padding: 14px 16px 6px;
+}
+.stay-checkin  { background: #e8f5e9; border: 1.5px solid #a5d6a7; }
+.stay-checkout { background: #fff8e1; border: 1.5px solid #ffe082; }
+.stay-col-label {
+  font-size: 11px; font-weight: 800; letter-spacing: 1px;
+  margin-bottom: 10px; text-transform: uppercase;
+}
+.stay-checkin  .stay-col-label { color: #2e7d32; }
+.stay-checkout .stay-col-label { color: #e65100; }
+.stay-dates-arrow {
+  font-size: 22px; color: #aaa; padding-top: 38px; flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .stay-dates-block { flex-direction: column; }
+  .stay-dates-arrow { display: none; }
+}
+
 /* ── @print (for direct print) ───────────────────────────────────────────────*/
 @media print {
   body { background: #fff; }

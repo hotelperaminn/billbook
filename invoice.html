@@ -26,21 +26,22 @@
 
 <div id="toast-container"></div>
 
-<div class="page-container" style="max-width:1400px;">
+<div class="page-container" style="max-width:860px;">
 
   <div class="page-header flex-between">
     <div>
       <div class="page-title" id="page-title">New Invoice</div>
-      <div class="page-subtitle">Fill in the details below — preview updates live on the right</div>
+      <div class="page-subtitle">Fill in the details, then preview or download the invoice</div>
     </div>
-    <a href="index.html" class="btn btn-outline">← Back to Dashboard</a>
+    <a href="index.html" class="btn btn-outline">← Back</a>
   </div>
 
-  <!-- Action Bar (top) -->
-  <div class="card mb-16" style="margin-bottom:16px;">
+  <!-- Action Bar -->
+  <div class="card" style="margin-bottom:16px;">
     <div class="card-body" style="padding:12px 20px;">
       <div class="action-bar" style="border:none;margin:0;padding:0;">
-        <button class="btn btn-primary" id="btn-save">💾 Save Invoice</button>
+        <button class="btn btn-primary" id="btn-save">💾 Save</button>
+        <button class="btn btn-info" id="btn-preview">👁️ Preview Invoice</button>
         <button class="btn btn-warning" id="btn-pdf">⬇️ Download PDF</button>
         <button class="btn btn-success" id="btn-email">📧 Send Email</button>
         <button class="btn btn-secondary" id="btn-print">🖨️ Print</button>
@@ -49,173 +50,187 @@
     </div>
   </div>
 
-  <!-- Main Workspace -->
-  <div class="invoice-workspace">
+  <!-- Form -->
+  <div class="card" id="form-panel">
+    <div class="card-body">
 
-    <!-- LEFT: Form Panel -->
-    <div class="form-panel card" id="form-panel">
-      <div class="card-body">
-
-        <!-- Section 1: Invoice Details -->
-        <div class="section-title"><span class="section-icon">📋</span> Invoice Details</div>
-        <div class="form-row form-row-2">
-          <div class="form-group">
-            <label class="form-label">Invoice No<span class="required">*</span></label>
-            <input type="text" id="invoice-no" class="form-control" placeholder="INV-001">
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Section 2: Stay Details -->
-        <div class="section-title"><span class="section-icon">🛏️</span> Stay Details</div>
-        <div class="form-row form-row-2" style="margin-bottom:12px;">
-          <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label">Room / Reference</label>
-            <input type="text" id="reference" class="form-control" placeholder="ROOM NO: 208">
-          </div>
-        </div>
-        <div class="form-row form-row-4">
-          <div class="form-group">
-            <label class="form-label">Check-in Date<span class="required">*</span></label>
-            <input type="date" id="check-in" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Check-in Time</label>
-            <input type="time" id="check-in-time" class="form-control" value="12:00">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Check-out Date</label>
-            <input type="date" id="check-out" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Check-out Time</label>
-            <input type="time" id="check-out-time" class="form-control" value="11:00">
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Section 3: Customer Details -->
-        <div class="section-title"><span class="section-icon">👤</span> Customer Details</div>
-        <div class="form-row form-row-2">
-          <div class="form-group">
-            <label class="form-label">Guest / Customer Name<span class="required">*</span></label>
-            <input type="text" id="cust-name" class="form-control" placeholder="MANGALI MADHU MOHAN">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Company / Organisation</label>
-            <input type="text" id="cust-company" class="form-control" placeholder="UNION BANK OF INDIA">
-          </div>
-        </div>
-        <div class="form-row form-row-3">
-          <div class="form-group">
-            <label class="form-label">Customer GSTIN</label>
-            <input type="text" id="cust-gstin" class="form-control" placeholder="37AAACU0564G2ZF" maxlength="15" style="text-transform:uppercase;">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phone</label>
-            <input type="tel" id="cust-phone" class="form-control" placeholder="9876543210">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email (for sending invoice)</label>
-            <input type="email" id="cust-email" class="form-control" placeholder="guest@example.com">
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Section 4: Billing Address -->
-        <div class="section-title"><span class="section-icon">📍</span> Billing Address</div>
-        <div class="form-row form-row-2">
-          <div class="form-group">
-            <label class="form-label">Address Line 1</label>
-            <input type="text" id="bill-addr1" class="form-control" placeholder="DORNIPADU BRANCH">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Address Line 2</label>
-            <input type="text" id="bill-addr2" class="form-control" placeholder="NANDYAL">
-          </div>
-        </div>
-        <div class="form-row form-row-3">
-          <div class="form-group">
-            <label class="form-label">City</label>
-            <input type="text" id="bill-city" class="form-control" placeholder="Nandyal">
-          </div>
-          <div class="form-group">
-            <label class="form-label">State</label>
-            <select id="bill-state" class="form-select"></select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Pincode</label>
-            <input type="text" id="bill-pin" class="form-control" placeholder="518135" maxlength="6">
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Section 5: Place of Supply -->
-        <div class="section-title"><span class="section-icon">🗺️</span> GST Details</div>
-        <div class="form-row form-row-2">
-          <div class="form-group">
-            <label class="form-label">Place of Supply</label>
-            <select id="supply-code" class="form-select"></select>
-            <div class="form-hint">Same state as hotel = CGST+SGST; Different = IGST</div>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Section 6: Items -->
-        <div class="section-title flex-between">
-          <span><span class="section-icon">📦</span> Items / Services</span>
-          <button class="btn btn-outline btn-sm" id="btn-add-item" type="button">+ Add Row</button>
-        </div>
-
-        <div style="overflow-x:auto;">
-          <table class="items-grid" style="min-width:700px;">
-            <thead>
-              <tr>
-                <th style="width:28px;">#</th>
-                <th>Description</th>
-                <th style="width:100px;">SAC Code</th>
-                <th style="width:90px;">Rate (₹)</th>
-                <th style="width:70px;">Qty</th>
-                <th style="width:80px;">Unit</th>
-                <th style="width:75px;">GST %</th>
-                <th style="width:90px;text-align:right;">Amount</th>
-                <th style="width:32px;"></th>
-              </tr>
-            </thead>
-            <tbody id="items-tbody"></tbody>
-          </table>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Section 7: Notes -->
-        <div class="section-title"><span class="section-icon">📝</span> Notes</div>
+      <!-- Invoice Details -->
+      <div class="section-title"><span class="section-icon">📋</span> Invoice Details</div>
+      <div style="max-width:280px;">
         <div class="form-group">
-          <textarea id="notes" class="form-control" rows="2" placeholder="Additional notes or terms…"></textarea>
-        </div>
-
-      </div><!-- /card-body -->
-    </div><!-- /form-panel -->
-
-    <!-- RIGHT: Preview Panel -->
-    <div class="preview-panel">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">📄 Live Preview</div>
-          <div style="font-size:11px;color:#888;">Updates as you type</div>
-        </div>
-        <div class="preview-wrapper">
-          <div id="invoice-preview-container"></div>
+          <label class="form-label">Invoice No<span class="required">*</span></label>
+          <input type="text" id="invoice-no" class="form-control" placeholder="INV-001">
         </div>
       </div>
-    </div>
 
-  </div><!-- /invoice-workspace -->
+      <div class="divider"></div>
+
+      <!-- Stay Details -->
+      <div class="section-title"><span class="section-icon">🛏️</span> Stay Details</div>
+
+      <div style="max-width:320px;margin-bottom:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Room / Reference</label>
+          <input type="text" id="reference" class="form-control" placeholder="ROOM NO: 208">
+        </div>
+      </div>
+
+      <!-- Check-in / Check-out block -->
+      <div class="stay-dates-block">
+        <div class="stay-dates-col stay-checkin">
+          <div class="stay-col-label">CHECK-IN</div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="form-label">Date<span class="required">*</span></label>
+              <input type="date" id="check-in" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Time</label>
+              <input type="time" id="check-in-time" class="form-control" value="12:00">
+            </div>
+          </div>
+        </div>
+        <div class="stay-dates-arrow">→</div>
+        <div class="stay-dates-col stay-checkout">
+          <div class="stay-col-label">CHECK-OUT</div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" id="check-out" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Time</label>
+              <input type="time" id="check-out-time" class="form-control" value="11:00">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Customer Details -->
+      <div class="section-title"><span class="section-icon">👤</span> Customer Details</div>
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">Guest / Customer Name<span class="required">*</span></label>
+          <input type="text" id="cust-name" class="form-control" placeholder="MANGALI MADHU MOHAN">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company / Organisation</label>
+          <input type="text" id="cust-company" class="form-control" placeholder="UNION BANK OF INDIA">
+        </div>
+      </div>
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label">Customer GSTIN</label>
+          <input type="text" id="cust-gstin" class="form-control" placeholder="37AAACU0564G2ZF" maxlength="15" style="text-transform:uppercase;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" id="cust-phone" class="form-control" placeholder="9876543210">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="cust-email" class="form-control" placeholder="guest@example.com">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Billing Address -->
+      <div class="section-title"><span class="section-icon">📍</span> Billing Address</div>
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">Address Line 1</label>
+          <input type="text" id="bill-addr1" class="form-control" placeholder="DORNIPADU BRANCH">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address Line 2</label>
+          <input type="text" id="bill-addr2" class="form-control" placeholder="NANDYAL">
+        </div>
+      </div>
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label">City</label>
+          <input type="text" id="bill-city" class="form-control" placeholder="Nandyal">
+        </div>
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <select id="bill-state" class="form-select"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pincode</label>
+          <input type="text" id="bill-pin" class="form-control" placeholder="518135" maxlength="6">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- GST Details -->
+      <div class="section-title"><span class="section-icon">🗺️</span> GST Details</div>
+      <div style="max-width:380px;">
+        <div class="form-group">
+          <label class="form-label">Place of Supply</label>
+          <select id="supply-code" class="form-select"></select>
+          <div class="form-hint">Same state as hotel = CGST+SGST &nbsp;|&nbsp; Different state = IGST</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Items -->
+      <div class="section-title flex-between">
+        <span><span class="section-icon">📦</span> Items / Services</span>
+        <button class="btn btn-outline btn-sm" id="btn-add-item" type="button">+ Add Row</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="items-grid" style="min-width:700px;">
+          <thead>
+            <tr>
+              <th style="width:28px;">#</th>
+              <th>Description</th>
+              <th style="width:100px;">SAC Code</th>
+              <th style="width:90px;">Rate (₹)</th>
+              <th style="width:70px;">Qty</th>
+              <th style="width:80px;">Unit</th>
+              <th style="width:75px;">GST %</th>
+              <th style="width:90px;text-align:right;">Amount</th>
+              <th style="width:32px;"></th>
+            </tr>
+          </thead>
+          <tbody id="items-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Notes -->
+      <div class="section-title"><span class="section-icon">📝</span> Notes</div>
+      <div class="form-group">
+        <textarea id="notes" class="form-control" rows="2" placeholder="Additional notes or terms…"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="height:40px;"></div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="preview-modal" style="display:none;">
+  <div style="background:#fff;border-radius:14px;width:100%;max-width:860px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.3);">
+    <div style="padding:14px 20px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div style="font-weight:700;font-size:16px;color:#1a3c5e;">Invoice Preview</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-warning btn-sm" onclick="downloadPDF()">⬇️ Download PDF</button>
+        <button class="btn btn-secondary btn-sm" onclick="printInvoice()">🖨️ Print</button>
+        <button class="btn btn-light btn-sm" onclick="closePreview()">✕ Close</button>
+      </div>
+    </div>
+    <div style="overflow-y:auto;padding:20px;background:#e8ecf0;flex:1;">
+      <div id="invoice-preview-container" style="background:#fff;max-width:794px;margin:0 auto;box-shadow:0 2px 12px rgba(0,0,0,.12);"></div>
+    </div>
+  </div>
 </div>
 
 <!-- Scripts -->
@@ -225,6 +240,12 @@
   window.addEventListener('load', () => {
     const s = JSON.parse(localStorage.getItem('bb_settings') || '{}');
     if (s.ejsPublicKey) emailjs.init(s.ejsPublicKey);
+  });
+  function closePreview() {
+    document.getElementById('preview-modal').style.display = 'none';
+  }
+  document.getElementById('preview-modal').addEventListener('click', function(e) {
+    if (e.target === this) closePreview();
   });
 </script>
 <script src="js/app.js"></script>

@@ -33,7 +33,6 @@ function init() {
   }
 
   attachListeners();
-  updatePreview();
 }
 
 function renderNavBrand() {
@@ -138,8 +137,7 @@ function addItemRow(item = {}) {
     </td>`;
   tbody.appendChild(tr);
 
-  // Event listeners on this row
-  tr.querySelectorAll('input,select').forEach(el => el.addEventListener('input', () => { calcRowAmount(tr); updatePreview(); }));
+  tr.querySelectorAll('input,select').forEach(el => el.addEventListener('input', () => calcRowAmount(tr)));
   calcRowAmount(tr);
 }
 
@@ -158,12 +156,10 @@ function removeItemRow(btn) {
   const tbody = document.getElementById('items-tbody');
   if (tbody.children.length <= 1) { showToast('At least one item required', 'warning'); return; }
   tr.remove();
-  // Re-number
   [...tbody.children].forEach((row, i) => {
     const first = row.querySelector('td:first-child');
     if (first) first.textContent = i + 1;
   });
-  updatePreview();
 }
 
 function collectItems() {
@@ -203,37 +199,21 @@ function collectFormData() {
   };
 }
 
-function updatePreview() {
+function showPreview() {
   const inv = collectFormData();
   const settings = getSettings();
   const { total } = calcTotals(inv.items || [], settings.stateCode, inv.supplyCode || settings.stateCode);
   inv.total = total;
-
   document.getElementById('invoice-preview-container').innerHTML = renderInvoice(inv, settings);
-
-  // Scale preview to fit container
-  const wrapper = document.querySelector('.preview-wrapper');
-  const sheet = document.querySelector('.invoice-sheet');
-  if (wrapper && sheet) {
-    const scale = (wrapper.clientWidth - 32) / 794;
-    sheet.style.transform = `scale(${Math.min(scale, 1)})`;
-    sheet.style.transformOrigin = 'top left';
-    sheet.style.width = '794px';
-    const scaledH = sheet.scrollHeight * Math.min(scale, 1);
-    wrapper.style.minHeight = scaledH + 'px';
-  }
+  document.getElementById('preview-modal').style.display = 'flex';
 }
 
 function attachListeners() {
-  document.querySelectorAll('#form-panel input, #form-panel select, #form-panel textarea').forEach(el => {
-    el.addEventListener('input', debounce(updatePreview, 250));
-  });
-
-  // Auto check-out nights calc
   document.getElementById('check-in').addEventListener('change', syncStayDates);
   document.getElementById('check-out').addEventListener('change', syncStayDates);
 
-  document.getElementById('btn-add-item').addEventListener('click', () => { addItemRow(); updatePreview(); });
+  document.getElementById('btn-add-item').addEventListener('click', () => addItemRow());
+  document.getElementById('btn-preview').addEventListener('click', showPreview);
   document.getElementById('btn-save').addEventListener('click', saveInvoice);
   document.getElementById('btn-pdf').addEventListener('click', downloadPDF);
   document.getElementById('btn-email').addEventListener('click', sendEmail);
@@ -257,14 +237,10 @@ function syncStayDates() {
   if (firstQty) { firstQty.value = days; firstQty.dispatchEvent(new Event('input')); }
 }
 
-function debounce(fn, ms) {
-  let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-}
 
 function saveInvoice(e, callback) {
   const inv = collectFormData();
   if (!inv.customerName) { showToast('Customer name is required', 'warning'); return; }
-  if (!inv.invoiceDate) { showToast('Invoice date is required', 'warning'); return; }
 
   const settings = getSettings();
   const { total } = calcTotals(inv.items || [], settings.stateCode, inv.supplyCode || settings.stateCode);
