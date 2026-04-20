@@ -49,9 +49,12 @@ function saveInvoiceData(inv) {
   const numPart = parseInt(inv.invoiceNo.replace(s.invoicePrefix, '')) + 1;
   if (!isNaN(numPart) && numPart > s.nextNo) { s.nextNo = numPart; saveSettings(s); }
   localStorage.setItem(SK.INVOICES, JSON.stringify(list));
+  if (typeof GHS !== 'undefined') GHS.save(list);
 }
 function deleteInvoiceById(id) {
-  localStorage.setItem(SK.INVOICES, JSON.stringify(getInvoices().filter(i => i.id !== id)));
+  const list = getInvoices().filter(i => i.id !== id);
+  localStorage.setItem(SK.INVOICES, JSON.stringify(list));
+  if (typeof GHS !== 'undefined') GHS.save(list);
 }
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 function getNextInvoiceNo() { const s = getSettings(); return s.invoicePrefix + s.nextNo; }

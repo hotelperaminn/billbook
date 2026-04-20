@@ -23,6 +23,8 @@ function init() {
   document.getElementById('btn-remove-logo').addEventListener('click', removeLogo);
   document.getElementById('btn-save').addEventListener('click', saveAll);
   document.getElementById('btn-test-email').addEventListener('click', testEmail);
+  document.getElementById('btn-test-gh').addEventListener('click', testGitHub);
+  document.getElementById('btn-sync-now').addEventListener('click', syncNow);
 
   // Auto-format GSTIN
   document.getElementById('gstin').addEventListener('input', e => {
@@ -66,6 +68,7 @@ function loadForm(s) {
   set('ejs-service-id', s.ejsServiceId);
   set('ejs-template-id', s.ejsTemplateId);
   set('ejs-public-key', s.ejsPublicKey);
+  set('gh-token', s.ghToken);
 
   if (s.logo) {
     document.getElementById('logo-preview').src = s.logo;
@@ -133,9 +136,10 @@ function saveAll() {
   s.bankIfsc    = getVal('bank-ifsc');
   s.bankBranch  = getVal('bank-branch');
   s.termsText   = getVal('terms-text');
-  s.ejsServiceId = getVal('ejs-service-id');
+  s.ejsServiceId  = getVal('ejs-service-id');
   s.ejsTemplateId = getVal('ejs-template-id');
-  s.ejsPublicKey = getVal('ejs-public-key');
+  s.ejsPublicKey  = getVal('ejs-public-key');
+  s.ghToken       = getVal('gh-token');
 
   if (!s.hotelName) { showToast('Hotel name is required', 'warning'); return; }
 
@@ -181,6 +185,37 @@ async function testEmail() {
     console.error(err);
   } finally {
     btn.disabled = false; btn.textContent = '🧪 Send Test Email';
+  }
+}
+
+async function testGitHub() {
+  const token = getVal('gh-token');
+  if (!token) { showToast('Enter a GitHub token first', 'warning'); return; }
+
+  // Temporarily apply token so GHS can use it
+  const s = getSettings(); s.ghToken = token; saveSettings(s);
+
+  const btn = document.getElementById('btn-test-gh');
+  const result = document.getElementById('gh-test-result');
+  btn.disabled = true; btn.textContent = '⏳ Testing…';
+  result.textContent = '';
+
+  const { ok, msg } = await GHS.testConnection();
+  result.textContent = (ok ? '✅ ' : '❌ ') + msg;
+  result.style.color = ok ? '#2e7d32' : '#c62828';
+  btn.disabled = false; btn.textContent = '🔗 Test Connection';
+  if (ok) showToast(msg, 'success');
+}
+
+async function syncNow() {
+  const btn = document.getElementById('btn-sync-now');
+  btn.disabled = true; btn.textContent = '⏳ Syncing…';
+  const invoices = await GHS.manualSync();
+  btn.disabled = false; btn.textContent = '🔄 Sync Now';
+  if (invoices !== null) {
+    showToast(`Synced — ${invoices.length} invoice(s) loaded`, 'success');
+  } else {
+    showToast('Sync failed — check token and connection', 'danger');
   }
 }
 

@@ -12,8 +12,9 @@ const SAC_CODES = [
   { code: '996334', label: 'Bar/Lounge Services' },
 ];
 
-function init() {
+async function init() {
   renderNavBrand();
+  await initGitHubSync();
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const settings = getSettings();

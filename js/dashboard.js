@@ -1,8 +1,9 @@
 // Dashboard page logic
 let allInvoices = [];
 
-function init() {
+async function init() {
   renderNavBrand();
+  await initGitHubSync();
   allInvoices = getInvoices();
   renderStats();
   renderTable(allInvoices);
