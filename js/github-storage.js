@@ -143,6 +143,43 @@ const GHS = {
       return invoices;
     }
     return null;
+  },
+
+  async saveSettings(settings) {
+    if (!this.isReady()) return;
+    // Exclude large logo from cloud sync to keep file small
+    const { logo, ...rest } = settings;
+    try {
+      const res = await this.read('data/settings.json').catch(() => ({ data: null, sha: null }));
+      await this.write('data/settings.json', rest, res.sha);
+    } catch (e) { /* silent */ }
+  },
+
+  async loadSettings() {
+    if (!this.isReady()) return null;
+    try {
+      const { data } = await this.read('data/settings.json');
+      return data;
+    } catch (e) { return null; }
+  },
+
+  // Poll GitHub every 30s and fire 'bb-invoices-updated' if data changed
+  startPolling(interval = 30000) {
+    if (this._pollTimer) return;
+    this._pollTimer = setInterval(async () => {
+      if (!this.isReady()) return;
+      try {
+        const { data, sha } = await this.read('data/invoices.json');
+        if (!data) return;
+        const current = localStorage.getItem('bb_invoices') || '[]';
+        const incoming = JSON.stringify(data);
+        if (incoming !== current) {
+          this._sha = sha;
+          localStorage.setItem('bb_invoices', incoming);
+          window.dispatchEvent(new CustomEvent('bb-invoices-updated'));
+        }
+      } catch (e) { /* silent */ }
+    }, interval);
   }
 };
 
@@ -177,6 +214,13 @@ async function initGitHubSync() {
         }
       }
     } catch (e) { /* silent */ }
+  }
+
+  // Pull settings from GitHub (preserves local logo)
+  const cloudSettings = await GHS.loadSettings();
+  if (cloudSettings) {
+    const local = JSON.parse(localStorage.getItem('bb_settings') || '{}');
+    localStorage.setItem('bb_settings', JSON.stringify({ ...local, ...cloudSettings, logo: local.logo || null }));
   }
 
   const invoices = await GHS.load();

@@ -1,5 +1,5 @@
 // Settings page logic
-function init() {
+async function init() {
   const params = new URLSearchParams(window.location.search);
   const setupToken = params.get('setup');
   if (setupToken) {
@@ -11,6 +11,8 @@ function init() {
     setTimeout(() => window.location.href = 'index.html', 2000);
     return;
   }
+
+  await initGitHubSync();
 
   const s = getSettings();
   loadForm(s);

@@ -10,6 +10,14 @@ async function init() {
   document.getElementById('search-input').addEventListener('input', applyFilters);
   document.getElementById('status-filter').addEventListener('change', applyFilters);
   document.getElementById('sort-select').addEventListener('change', applyFilters);
+
+  // Auto-refresh when background poll finds new data
+  window.addEventListener('bb-invoices-updated', () => {
+    allInvoices = getInvoices();
+    renderStats();
+    renderTable(allInvoices);
+  });
+  GHS.startPolling();
 }
 
 function renderNavBrand() {

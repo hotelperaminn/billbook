@@ -34,7 +34,10 @@ function getSettings() {
   const s = localStorage.getItem(SK.SETTINGS);
   return s ? { ...DEFAULT_SETTINGS, ...JSON.parse(s) } : { ...DEFAULT_SETTINGS };
 }
-function saveSettings(s) { localStorage.setItem(SK.SETTINGS, JSON.stringify(s)); }
+function saveSettings(s) {
+  localStorage.setItem(SK.SETTINGS, JSON.stringify(s));
+  if (typeof GHS !== 'undefined') GHS.saveSettings(s);
+}
 
 function getInvoices() {
   const s = localStorage.getItem(SK.INVOICES);
