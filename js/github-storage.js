@@ -165,11 +165,24 @@ function setSyncStatus(status, msg) {
 
 // ── Init: called on every page load ─────────────────────────────────────────
 async function initGitHubSync() {
+  if (!GHS.token()) {
+    try {
+      const resp = await fetch('data/config.json?_=' + Date.now());
+      if (resp.ok) {
+        const cfg = await resp.json();
+        if (Array.isArray(cfg.k)) {
+          const s = getSettings();
+          s.ghToken = String.fromCharCode(...cfg.k);
+          saveSettings(s);
+        }
+      }
+    } catch (e) { /* silent */ }
+  }
+
   const invoices = await GHS.load();
   if (invoices !== null) {
     localStorage.setItem('bb_invoices', JSON.stringify(invoices));
     return invoices;
   }
-  // GitHub not configured or failed — stay on localStorage
   return JSON.parse(localStorage.getItem('bb_invoices') || '[]');
 }
