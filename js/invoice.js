@@ -44,17 +44,15 @@ function renderNavBrand() {
 }
 
 function createBlank(settings) {
-  const today = todayStr();
   return {
     id: genId(),
     invoiceNo: getNextInvoiceNo(),
-    invoiceDate: today,
-    dueDate: addDays(today, settings.paymentDays || 6),
     customerName: '', customerCompany: '', customerGstin: '', customerPhone: '', customerEmail: '',
     billAddr1: '', billAddr2: '', billCity: '', billState: '', billPin: '',
     supplyCode: settings.stateCode,
     reference: '',
-    checkIn: '', checkOut: '',
+    checkIn: '', checkInTime: '12:00',
+    checkOut: '', checkOutTime: '11:00',
     items: [{ id: genId(), description: 'ROOM SERVICE', sac: '996322', rate: '', qty: 1, unit: 'DAY', taxRate: settings.defaultTax || 5 }],
     notes: '',
     status: 'draft',
@@ -64,8 +62,6 @@ function createBlank(settings) {
 
 function populateForm(inv) {
   setVal('invoice-no', inv.invoiceNo);
-  setVal('invoice-date', inv.invoiceDate);
-  setVal('due-date', inv.dueDate);
   setVal('cust-name', inv.customerName);
   setVal('cust-company', inv.customerCompany);
   setVal('cust-gstin', inv.customerGstin);
@@ -77,7 +73,9 @@ function populateForm(inv) {
   setVal('bill-pin', inv.billPin);
   setVal('reference', inv.reference);
   setVal('check-in', inv.checkIn);
+  setVal('check-in-time', inv.checkInTime || '12:00');
   setVal('check-out', inv.checkOut);
+  setVal('check-out-time', inv.checkOutTime || '11:00');
   setVal('notes', inv.notes);
   if (inv.billState) setSelectVal('bill-state', inv.billState);
   if (inv.supplyCode) setSelectVal('supply-code', inv.supplyCode);
@@ -184,8 +182,6 @@ function collectFormData() {
   return {
     ...currentInvoice,
     invoiceNo: getVal('invoice-no'),
-    invoiceDate: getVal('invoice-date'),
-    dueDate: getVal('due-date'),
     customerName: getVal('cust-name'),
     customerCompany: getVal('cust-company'),
     customerGstin: getVal('cust-gstin'),
@@ -199,7 +195,9 @@ function collectFormData() {
     supplyCode: getVal('supply-code'),
     reference: getVal('reference'),
     checkIn: getVal('check-in'),
+    checkInTime: getVal('check-in-time') || '12:00',
     checkOut: getVal('check-out'),
+    checkOutTime: getVal('check-out-time') || '11:00',
     notes: getVal('notes'),
     items: collectItems(),
   };

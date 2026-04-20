@@ -64,6 +64,13 @@ function fmtDate(d) {
   const dt = new Date(d + 'T00:00:00');
   return dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
+function fmtDateTime(date, time) {
+  if (!date) return '';
+  const dt = new Date(date + 'T' + (time || '00:00'));
+  const datePart = dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  const timePart = dt.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+  return `${datePart}, ${timePart}`;
+}
 function fmtNum(n, dec = 2) {
   return parseFloat(n || 0).toLocaleString('en-IN', { minimumFractionDigits: dec, maximumFractionDigits: dec });
 }
@@ -233,8 +240,8 @@ function renderInvoice(inv, settings) {
   <table style="width:100%;margin:6px 0;">
     <tr>
       <td style="font-size:12px;"><strong>Invoice #:</strong> ${inv.invoiceNo || ''}</td>
-      <td style="font-size:12px;text-align:center;"><strong>Invoice Date:</strong> ${fmtDate(inv.invoiceDate)}</td>
-      <td style="font-size:12px;text-align:right;"><strong>Due Date:</strong> ${fmtDate(inv.dueDate)}</td>
+      <td style="font-size:12px;text-align:center;"><strong>Check-in:</strong> ${fmtDateTime(inv.checkIn, inv.checkInTime)}</td>
+      <td style="font-size:12px;text-align:right;"><strong>Check-out:</strong> ${fmtDateTime(inv.checkOut, inv.checkOutTime)}</td>
     </tr>
   </table>
   <hr style="border:none;border-top:1px solid #ccc;margin:6px 0;">
