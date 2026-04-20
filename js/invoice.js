@@ -217,7 +217,6 @@ function attachListeners() {
   document.getElementById('btn-preview').addEventListener('click', showPreview);
   document.getElementById('btn-save').addEventListener('click', saveInvoice);
   document.getElementById('btn-pdf').addEventListener('click', downloadPDF);
-  document.getElementById('btn-email').addEventListener('click', sendEmail);
   document.getElementById('btn-print').addEventListener('click', printInvoice);
   document.getElementById('btn-new-from-here').addEventListener('click', () => {
     if (confirm('Save current invoice and start a new one?')) {

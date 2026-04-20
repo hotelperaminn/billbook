@@ -96,8 +96,7 @@ function renderTable(invoices) {
       <td>
         <div class="flex gap-8" style="justify-content:flex-end;">
           <a href="invoice.html?id=${inv.id}" class="btn btn-sm btn-outline" title="Edit">✏️</a>
-          <button class="btn btn-sm btn-info" title="Download PDF" onclick="downloadPDF('${inv.id}')">⬇️</button>
-          <button class="btn btn-sm btn-success" title="Send Email" onclick="promptEmail('${inv.id}')">📧</button>
+          <button class="btn btn-sm btn-info" title="Download PDF" onclick="downloadPDF('${inv.id}')">⬇️ PDF</button>
           <button class="btn btn-sm btn-danger" title="Delete" onclick="confirmDelete('${inv.id}')">🗑️</button>
         </div>
       </td>

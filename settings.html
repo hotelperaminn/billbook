@@ -118,6 +118,43 @@
     </div>
   </div>
 
+  <!-- GitHub Storage -->
+  <div class="card mb-16" style="margin-bottom:20px;" id="github-section">
+    <div class="card-header" style="background:#e8f4fd;">
+      <div class="card-title" style="color:#01579b;">☁️ Cloud Storage — Save invoices to GitHub (cross-device)</div>
+    </div>
+    <div class="card-body">
+      <div style="background:#f0f7ff;border:1px solid #b3d7f5;border-radius:10px;padding:16px;margin-bottom:20px;">
+        <div style="font-weight:700;color:#01579b;margin-bottom:8px;">📖 Steps to enable (one-time setup):</div>
+        <ol style="font-size:13px;color:#333;line-height:2.2;padding-left:18px;margin:0;">
+          <li>Open <strong>github.com</strong> → click your profile photo → <strong>Settings</strong></li>
+          <li>Scroll to bottom → <strong>Developer settings</strong> → <strong>Personal access tokens</strong> → <strong>Fine-grained tokens</strong></li>
+          <li>Click <strong>Generate new token</strong> → give it any name (e.g. <em>billbook-storage</em>)</li>
+          <li>Under <strong>Repository access</strong> → select <strong>Only select repositories</strong> → choose <strong>billbook</strong></li>
+          <li>Under <strong>Permissions → Contents</strong> → change to <strong>Read and write</strong></li>
+          <li>Click <strong>Generate token</strong> → copy it and paste below</li>
+        </ol>
+        <div style="margin-top:10px;padding:8px 12px;background:#fff3cd;border-radius:6px;font-size:12px;color:#664d03;">
+          💡 <strong>Tip:</strong> You can also use the same token you already have (the one starting with <code>ghp_</code>) — it works too.
+        </div>
+      </div>
+
+      <div style="max-width:500px;">
+        <div class="form-group">
+          <label class="form-label">GitHub Personal Access Token</label>
+          <input type="password" id="gh-token" class="form-control" placeholder="ghp_xxxx  or  github_pat_xxxx">
+          <div class="form-hint">Saved only in your browser. Used only to read/write <code>data/invoices.json</code> in your repo.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button class="btn btn-outline" id="btn-test-gh">🔗 Test Connection</button>
+        <button class="btn btn-info" id="btn-sync-now">🔄 Pull Latest from GitHub</button>
+        <span id="gh-test-result" style="font-size:13px;font-weight:600;"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- Invoice Defaults -->
   <div class="card mb-16" style="margin-bottom:20px;">
     <div class="card-header">
@@ -250,42 +287,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- GitHub Storage -->
-  <div class="card mb-16" style="margin-bottom:20px;" id="github-section">
-    <div class="card-header">
-      <div class="card-title">☁️ Cloud Storage (GitHub)</div>
-    </div>
-    <div class="card-body">
-      <div style="background:#e8f4fd;border:1px solid #b3d7f5;border-radius:10px;padding:16px;margin-bottom:20px;">
-        <div style="font-weight:700;color:#01579b;margin-bottom:8px;">📖 How to enable cross-device storage:</div>
-        <ol style="font-size:13px;color:#333;line-height:2;padding-left:18px;">
-          <li>Go to <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong></li>
-          <li>Click <strong>Generate new token</strong></li>
-          <li>Set <strong>Repository access</strong> → Only select repositories → choose <strong>billbook</strong></li>
-          <li>Under <strong>Permissions → Repository → Contents</strong> → set to <strong>Read and write</strong></li>
-          <li>Generate and paste the token below</li>
-        </ol>
-        <div style="margin-top:6px;font-size:12px;color:#555;">
-          Once configured, all invoices are saved to <code>data/invoices.json</code> in your repo and stay in sync across every device and browser.
-        </div>
-      </div>
-
-      <div style="max-width:480px;">
-        <div class="form-group">
-          <label class="form-label">GitHub Personal Access Token</label>
-          <input type="password" id="gh-token" class="form-control" placeholder="github_pat_xxxxxxxxxx">
-          <div class="form-hint">Stored locally in your browser — never sent anywhere except GitHub API</div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px;">
-        <button class="btn btn-outline" id="btn-test-gh">🔗 Test Connection</button>
-        <button class="btn btn-info" id="btn-sync-now">🔄 Sync Now</button>
-        <span id="gh-test-result" style="font-size:13px;"></span>
-      </div>
     </div>
   </div>
 
