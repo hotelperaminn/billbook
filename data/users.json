@@ -10,5 +10,11 @@
     "displayName": "Prathap",
     "role": "editor",
     "passwordHash": "75b04dcfe8a5fba12ff88522da89690f23f2da3b237278038a8446aac8a0dc10"
+  },
+  {
+    "username": "madhu",
+    "displayName": "Madhu",
+    "role": "viewer",
+    "passwordHash": "2554adec2678cc5fef0fd725bfd7acd2e1aa3668cc40372d464450a4c5575351"
   }
 ]
