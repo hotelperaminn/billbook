@@ -4,5 +4,11 @@
     "passwordHash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
     "role": "admin",
     "displayName": "Admin"
+  },
+  {
+    "username": "prathap",
+    "displayName": "Prathap",
+    "role": "editor",
+    "passwordHash": "d2bc61a2cf12c74877d5ed1c9c798adbb36bbc916a2b53ae9f76476ca62d551b"
   }
 ]
