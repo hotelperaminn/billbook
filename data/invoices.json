@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "id": "mo8aos0zan2ug",
+    "invoiceNo": "INV-425",
+    "customerName": "Prathap",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "",
+    "customerEmail": "",
+    "billAddr1": "",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "102",
+    "checkIn": "2026-04-20",
+    "checkInTime": "17:26",
+    "checkOut": "2026-04-22",
+    "checkOutTime": "06:00",
+    "items": [
+      {
+        "id": "mo8aos0zxz97d",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 2500,
+        "qty": 2,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 5250
+  }
+]
