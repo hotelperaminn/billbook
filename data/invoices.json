@@ -1,5 +1,39 @@
 [
   {
+    "id": "moh236m1765mk",
+    "invoiceNo": "INV-427",
+    "customerName": "CH SREENIVASULU",
+    "customerCompany": "Union Bank of India  Nandyal main branch",
+    "customerGstin": "37AaaCU0564G2ZF",
+    "customerPhone": "9182405497",
+    "customerEmail": "",
+    "billAddr1": "",
+    "billAddr2": "",
+    "billCity": "Nandyal",
+    "billState": "37",
+    "billPin": "518501",
+    "supplyCode": "37",
+    "reference": "207",
+    "checkIn": "2026-04-27",
+    "checkInTime": "05:00",
+    "checkOut": "2026-04-27",
+    "checkOutTime": "16:31",
+    "items": [
+      {
+        "id": "moh236m1adojs",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1000,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1050
+  },
+  {
     "id": "moh1lxr60micu",
     "invoiceNo": "INV-426",
     "customerName": "p SRINIVASULU",
