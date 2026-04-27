@@ -48,7 +48,7 @@
     "billPin": "518135",
     "supplyCode": "37",
     "reference": "307",
-    "checkIn": "2026-04-27",
+    "checkIn": "2026-04-26",
     "checkInTime": "00:00",
     "checkOut": "2026-04-27",
     "checkOutTime": "00:00",
@@ -58,14 +58,14 @@
         "description": "ROOM SERVICE",
         "sac": "996322",
         "rate": 1000,
-        "qty": 2,
+        "qty": 1,
         "unit": "DAY",
         "taxRate": 5
       }
     ],
     "notes": "",
     "status": "draft",
-    "total": 2100
+    "total": 1050
   },
   {
     "id": "moh7j2ofm7nm5",
