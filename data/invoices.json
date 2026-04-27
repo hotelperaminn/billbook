@@ -1,5 +1,39 @@
 [
   {
+    "id": "moh1lxr60micu",
+    "invoiceNo": "INV-426",
+    "customerName": "p SRINIVASULU",
+    "customerCompany": "UNION Bank of India NOONE PALLI NANDYAL 518501",
+    "customerGstin": "37AAACU0564G2ZF",
+    "customerPhone": "9701605406",
+    "customerEmail": "",
+    "billAddr1": "",
+    "billAddr2": "",
+    "billCity": "Nandyal",
+    "billState": "37",
+    "billPin": "510501",
+    "supplyCode": "37",
+    "reference": "208",
+    "checkIn": "2026-04-27",
+    "checkInTime": "05:00",
+    "checkOut": "2026-04-27",
+    "checkOutTime": "16:30",
+    "items": [
+      {
+        "id": "moh1lxr61d561",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1000,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1050
+  },
+  {
     "id": "mo8aos0zan2ug",
     "invoiceNo": "INV-425",
     "customerName": "Prathap",
