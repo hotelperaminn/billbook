@@ -151,9 +151,9 @@
     "supplyCode": "37",
     "reference": "303",
     "checkIn": "2026-04-27",
-    "checkInTime": "05:00",
+    "checkInTime": "00:00",
     "checkOut": "2026-04-27",
-    "checkOutTime": "19:00",
+    "checkOutTime": "00:00",
     "items": [
       {
         "id": "moh70kwsznzqe",
