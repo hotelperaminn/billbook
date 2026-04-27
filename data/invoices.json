@@ -58,14 +58,14 @@
         "description": "ROOM SERVICE",
         "sac": "996322",
         "rate": 1000,
-        "qty": 1,
+        "qty": 2,
         "unit": "DAY",
         "taxRate": 5
       }
     ],
     "notes": "",
     "status": "draft",
-    "total": 1050
+    "total": 2100
   },
   {
     "id": "moh7j2ofm7nm5",
