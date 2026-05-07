@@ -1,5 +1,39 @@
 [
   {
+    "id": "mov48q7em9gaa",
+    "invoiceNo": "INV-481",
+    "customerName": "Satyanarayana",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "",
+    "customerEmail": "",
+    "billAddr1": "Visakhapatnam",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "105,106",
+    "checkIn": "2026-04-22",
+    "checkInTime": "15:29",
+    "checkOut": "2026-04-23",
+    "checkOutTime": "16:10",
+    "items": [
+      {
+        "id": "mov48q7ezbyru",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 3809,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 3999.45
+  },
+  {
     "id": "mov473fgphs69",
     "invoiceNo": "INV-480",
     "customerName": "Srinath",
