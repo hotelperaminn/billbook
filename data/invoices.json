@@ -1,5 +1,39 @@
 [
   {
+    "id": "mov3c756rcvr0",
+    "invoiceNo": "INV-473",
+    "customerName": "Praveen",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "8890971011",
+    "customerEmail": "",
+    "billAddr1": "",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "106",
+    "checkIn": "2026-04-19",
+    "checkInTime": "20:29",
+    "checkOut": "2026-04-21",
+    "checkOutTime": "07:40",
+    "items": [
+      {
+        "id": "mov3c75642x84",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1187,
+        "qty": 2,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 2492.7
+  },
+  {
     "id": "mov3act01z01y",
     "invoiceNo": "INV-472",
     "customerName": "Rithvik",
