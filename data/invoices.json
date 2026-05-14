@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp56z8z3mc0of",
+    "invoiceNo": "INV-523",
+    "customerName": "Jagdish",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "8464876484",
+    "customerEmail": "",
+    "billAddr1": "Nellore",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "307",
+    "checkIn": "2026-05-12",
+    "checkInTime": "12:00",
+    "checkOut": "2026-05-13",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp56z8z3zr4ye",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1144,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1201.1999999999998
+  },
+  {
     "id": "mp56wv096him6",
     "invoiceNo": "INV-522",
     "customerName": "Karimullah",
