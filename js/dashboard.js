@@ -8,14 +8,17 @@ async function init() {
   applyDashboardRoles();
   await initGitHubSync();
   allInvoices = getInvoices();
+  populateMonthFilter();
   renderStats();
   renderTable(allInvoices);
   document.getElementById('search-input').addEventListener('input', applyFilters);
+  document.getElementById('month-filter').addEventListener('change', applyFilters);
   document.getElementById('status-filter').addEventListener('change', applyFilters);
   document.getElementById('sort-select').addEventListener('change', applyFilters);
 
   window.addEventListener('bb-invoices-updated', () => {
     allInvoices = getInvoices();
+    populateMonthFilter();
     renderStats();
     renderTable(allInvoices);
   });
@@ -39,8 +42,8 @@ function renderNavBrand() {
   if (s.logo) logoEl.innerHTML = `<img src="${s.logo}" class="navbar-logo" alt="Logo">`;
 }
 
-function renderStats() {
-  const invoices = getInvoices();
+function renderStats(invoices) {
+  invoices = invoices || getInvoices();
   const total = invoices.length;
   const revenue = invoices.filter(i => i.status !== 'cancelled').reduce((s, i) => s + (i.total || 0), 0);
   const paid = invoices.filter(i => i.status === 'paid').length;
@@ -52,8 +55,38 @@ function renderStats() {
   document.getElementById('stat-pending').textContent = pending;
 }
 
+// Returns the primary date of an invoice (checkIn preferred, fallback invoiceDate)
+function invoiceMonth(inv) {
+  const d = inv.checkIn || inv.invoiceDate || '';
+  return d ? d.slice(0, 7) : ''; // "YYYY-MM"
+}
+
+function populateMonthFilter() {
+  const sel = document.getElementById('month-filter');
+  const current = sel.value;
+
+  // Collect unique YYYY-MM values, sorted newest first
+  const months = [...new Set(allInvoices.map(invoiceMonth).filter(Boolean))]
+    .sort((a, b) => b.localeCompare(a));
+
+  sel.innerHTML = '<option value="">All Months</option>';
+  months.forEach(ym => {
+    const [year, month] = ym.split('-');
+    const label = new Date(year, month - 1, 1)
+      .toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+    const opt = document.createElement('option');
+    opt.value = ym;
+    opt.textContent = label;
+    sel.appendChild(opt);
+  });
+
+  // Restore previously selected month if it still exists
+  if (current && months.includes(current)) sel.value = current;
+}
+
 function applyFilters() {
   const q = document.getElementById('search-input').value.toLowerCase();
+  const month = document.getElementById('month-filter').value;
   const status = document.getElementById('status-filter').value;
   const sort = document.getElementById('sort-select').value;
 
@@ -66,6 +99,7 @@ function applyFilters() {
       (i.customerCompany || '').toLowerCase().includes(q)
     );
   }
+  if (month) list = list.filter(i => invoiceMonth(i) === month);
   if (status) list = list.filter(i => i.status === status);
 
   list.sort((a, b) => {
@@ -77,6 +111,7 @@ function applyFilters() {
   });
 
   renderTable(list);
+  renderStats(list);
 }
 
 function renderTable(invoices) {
