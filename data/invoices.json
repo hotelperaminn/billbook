@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp56gt0h5sufu",
+    "invoiceNo": "INV-512",
+    "customerName": "Lokesh",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "9980068743",
+    "customerEmail": "",
+    "billAddr1": "Bangalore",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "203,206",
+    "checkIn": "2026-05-02",
+    "checkInTime": "12:00",
+    "checkOut": "2026-05-03",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp56gt0h5a6kj",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 2859,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 3001.95
+  },
+  {
     "id": "mp56fr8r4jha2",
     "invoiceNo": "INV-511",
     "customerName": "Venkat Krishna",
