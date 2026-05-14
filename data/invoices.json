@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp52vioqli9sd",
+    "invoiceNo": "INV-500",
+    "customerName": "Karthik",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "8008506352",
+    "customerEmail": "",
+    "billAddr1": "Kurnool",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "105",
+    "checkIn": "2026-04-27",
+    "checkInTime": "22:30",
+    "checkOut": "2026-04-28",
+    "checkOutTime": "07:30",
+    "items": [
+      {
+        "id": "mp52vioqusxaq",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 953,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1000.6500000000001
+  },
+  {
     "id": "mp52m7nic2c9a",
     "invoiceNo": "INV-499",
     "customerName": "Ramesh Babu",
