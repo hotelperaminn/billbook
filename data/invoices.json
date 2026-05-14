@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp5647swmj0pt",
+    "invoiceNo": "INV-504",
+    "customerName": "Ishwar",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "9441361777",
+    "customerEmail": "",
+    "billAddr1": "Ananthapuram",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "202",
+    "checkIn": "2026-04-29",
+    "checkInTime": "20:25",
+    "checkOut": "2026-04-30",
+    "checkOutTime": "17:10",
+    "items": [
+      {
+        "id": "mp5647sw3riyn",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1905,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 2000.25
+  },
+  {
     "id": "mp561zuv7fxqa",
     "invoiceNo": "INV-503",
     "customerName": "Subramanyam",
