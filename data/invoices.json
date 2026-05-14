@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp56ed291j71k",
+    "invoiceNo": "INV-510",
+    "customerName": "Naveen Kumar",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "9900217208",
+    "customerEmail": "",
+    "billAddr1": "Bangalore",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "204",
+    "checkIn": "2026-05-02",
+    "checkInTime": "12:00",
+    "checkOut": "2026-05-03",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp56ed29adqzm",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1430,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1501.5
+  },
+  {
     "id": "mp56d518wmo1s",
     "invoiceNo": "INV-509",
     "customerName": "Arun",
