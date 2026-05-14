@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp520oiz4gqbx",
+    "invoiceNo": "INV-495",
+    "customerName": "Madhav Swami",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "9966673892",
+    "customerEmail": "",
+    "billAddr1": "Kurnool",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "206,208,306",
+    "checkIn": "2026-04-27",
+    "checkInTime": "19:30",
+    "checkOut": "2026-04-28",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp520oizqe06m",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 4910,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 5155.5
+  },
+  {
     "id": "mp51yod5mqwno",
     "invoiceNo": "INV-494",
     "customerName": "Venkata Reddy",
