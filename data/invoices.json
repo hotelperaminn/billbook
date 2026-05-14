@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp561zuv7fxqa",
+    "invoiceNo": "INV-503",
+    "customerName": "Subramanyam",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "",
+    "customerEmail": "",
+    "billAddr1": "",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "105",
+    "checkIn": "2026-05-01",
+    "checkInTime": "23:55",
+    "checkOut": "2026-05-02",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp561zuv2g7fy",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1905,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 2000.25
+  },
+  {
     "id": "mp55zu1s63pcx",
     "invoiceNo": "INV-502",
     "customerName": "Venugopal",
