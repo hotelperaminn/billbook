@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp5677ykaqir5",
+    "invoiceNo": "INV-506",
+    "customerName": "Pawan Sai",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "8374749853",
+    "customerEmail": "",
+    "billAddr1": "Tirupati",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "205",
+    "checkIn": "2026-05-01",
+    "checkInTime": "12:00",
+    "checkOut": "2026-05-01",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp5677ykvtxkh",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 955,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1002.75
+  },
+  {
     "id": "mp565y1up2rr1",
     "invoiceNo": "INV-505",
     "customerName": "Mahesh",
