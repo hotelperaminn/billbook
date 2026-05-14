@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp51t4gg7q2xl",
+    "invoiceNo": "INV-492",
+    "customerName": "Santosh",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "7032731991",
+    "customerEmail": "",
+    "billAddr1": "Tirupati",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "301",
+    "checkIn": "2026-04-25",
+    "checkInTime": "03:30",
+    "checkOut": "2026-04-26",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp51t4ggcvj8x",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1428,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1499.4
+  },
+  {
     "id": "mp51qm9xxzy8s",
     "invoiceNo": "INV-491",
     "customerName": "G Sridhar",
