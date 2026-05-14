@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp56pwdbugkax",
+    "invoiceNo": "INV-518",
+    "customerName": "Harshavardhan",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "6305673951",
+    "customerEmail": "",
+    "billAddr1": "Srikalashree",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "308",
+    "checkIn": "2026-05-04",
+    "checkInTime": "12:00",
+    "checkOut": "2026-05-05",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp56pwdb09arh",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1430,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1501.5
+  },
+  {
     "id": "mp56p097n55rv",
     "invoiceNo": "INV-517",
     "customerName": "Samantha Reddy",
