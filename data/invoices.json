@@ -1,5 +1,39 @@
 [
   {
+    "id": "mp568uofql2e0",
+    "invoiceNo": "INV-507",
+    "customerName": "Sai venu",
+    "customerCompany": "",
+    "customerGstin": "",
+    "customerPhone": "9493288550",
+    "customerEmail": "",
+    "billAddr1": "Bangalore",
+    "billAddr2": "",
+    "billCity": "",
+    "billState": "37",
+    "billPin": "",
+    "supplyCode": "37",
+    "reference": "201",
+    "checkIn": "2026-05-01",
+    "checkInTime": "12:00",
+    "checkOut": "2026-05-02",
+    "checkOutTime": "11:00",
+    "items": [
+      {
+        "id": "mp568uofdh0zf",
+        "description": "ROOM SERVICE",
+        "sac": "996322",
+        "rate": 1523,
+        "qty": 1,
+        "unit": "DAY",
+        "taxRate": 5
+      }
+    ],
+    "notes": "",
+    "status": "draft",
+    "total": 1599.15
+  },
+  {
     "id": "mp5677ykaqir5",
     "invoiceNo": "INV-506",
     "customerName": "Pawan Sai",
